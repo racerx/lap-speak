@@ -17,8 +17,8 @@ def signal_handler(signal, frame):
 
 pnconfig = PNConfiguration()
  
-pnconfig.publish_key = 'demo'
-pnconfig.subscribe_key = 'demo'
+pnconfig.publish_key = ''
+pnconfig.subscribe_key = ''
  
 pubnub = PubNub(pnconfig)
  

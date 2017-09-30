@@ -2,6 +2,9 @@
 import time
 import signal
 import sys
+import serial
+
+port = serial.Serial("COM6", baudrate=9600, timeout=3.0)
 
 # import pubnub items
 from pubnub.enums import PNStatusCategory
@@ -20,8 +23,8 @@ signal.signal(signal.SIGINT, signal_handler)
 
 pnconfig = PNConfiguration()
  
-pnconfig.publish_key = 'demo'
-pnconfig.subscribe_key = 'demo'
+pnconfig.publish_key = 'YOUR-KEY'
+pnconfig.subscribe_key = 'YOUR-KEY'
  
 pubnub = PubNub(pnconfig)
  
@@ -33,9 +36,11 @@ my_listener.wait_for_connect()
 print('connected')
  
 while(True):
-	pubnub.publish().channel('awesomeChannel').message({'field1': 'awesome', 'fieldB': 10}).sync()
-	time.sleep(10)
-	print('I published some data!')
+    rcv = port.readline()
+    print("read from serial:" + rcv)
+    if rcv:
+        pubnub.publish().channel('awesomeChannel').message({'field1': rcv}).sync()
+        print("Published to pubnub channel:" + rcv)
 
  
 
